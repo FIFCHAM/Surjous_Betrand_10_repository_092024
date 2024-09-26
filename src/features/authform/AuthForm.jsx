@@ -1,9 +1,12 @@
 import  { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { signIn } from './authSlice';
+import { useDispatch} from 'react-redux';
+import { login } from './authSlice';
 import { useNavigate } from 'react-router-dom';
 const AuthForm = () => {
-    const [email, setEmail] = useState('');
+  
+  //const { email: savedEmail, password: savedPassword, rememberMe: savedRememberMe } = useSelector((state) => state.auth);
+
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -24,28 +27,69 @@ const AuthForm = () => {
           email,
           password,
           rememberMe,
+          
         }),
       });
 
       const data = await response.json();
-      console.log(data);
       
 
       if (response.ok) {
-        // Si la réponse est OK, on récupère le token
+        console.log(data);
         const token = data.body.token;
+        
 
-        // On stocke le token en local storage si 'remember me' est coché
-        if (rememberMe) {
-          localStorage.setItem('token', token);
-        }
+        
+
+        
+
+        // Appel de l'API pour récupérer les informations utilisateur
+        const userResponse = await fetch('http://localhost:3001/api/v1/user/profile', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        const userData = await userResponse.json();
+        console.log(userData);
+        console.log(userData.body.userName);
+        console.log(rememberMe);
+        
+
+        
+          // Dispatch dans Redux pour stocker les informations de l'utilisateur
+          dispatch(login({
+            id: userData.body.id,
+            email,
+            password,
+            token,
+            rememberMe,
+            username: userData.body.userName,
+            firstName: userData.body.firstName,
+            lastName: userData.body.lastName,
+          }));
+
+          // Redirection vers la page User
+          navigate('/user');
+        
+
+
+        
+        
+
+
+
+        
 
         // Dispatch de l'action Redux pour stocker les informations utilisateur
-        dispatch(signIn({ email, token }));
-        navigate('/user'); // Redirige vers la page utilisateur
+        
       } else {
-        setErrorMessage(data.message || 'Erreur lors de la connexion');
-      }
+        setErrorMessage(data.message);
+      };
+
+      
+       
     } catch (error) {
       console.error('Error:', error);
       setErrorMessage('Erreur lors de la connexion');

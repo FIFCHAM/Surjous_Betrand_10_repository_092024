@@ -1,10 +1,13 @@
  import Header from "../components/Header"
  import Footer from "../components/Footer"
+ import EdituserForm from "../features/editusername/EdituserForm"
+
  const User = () => {
   return (
     <>
       <Header />
       <main className="main bg-dark">
+        <EdituserForm />
       <div className="header">
         <h1>Welcome back<br />Tony Jarvis!</h1>
         <button className="edit-button">Edit Name</button>

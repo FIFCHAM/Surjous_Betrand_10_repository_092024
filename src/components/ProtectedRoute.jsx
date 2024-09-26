@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import Proptypes from 'prop-types';
 
 const ProtectedRoute = ({ children }) => {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector((state) => state.auth.isauthentified);
 
   // Si l'utilisateur n'est pas authentifié, on le redirige vers la page de connexion
   if (!isAuthenticated) {

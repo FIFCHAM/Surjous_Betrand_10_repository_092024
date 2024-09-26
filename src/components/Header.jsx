@@ -1,15 +1,16 @@
 import { Link,useNavigate } from "react-router-dom";
 import argentbanklogo from "../assets/images/argentBankLogo.png"
 import { useSelector,useDispatch } from "react-redux";
-import { signOut } from "../features/authform/authSlice";
+import { logout } from "../features/authform/authSlice";
 const Header = () => {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const {isauthentified }= useSelector((state) => state.auth);
+  const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleSignOut = () => {
-    dispatch(signOut()); // Déconnecter l'utilisateur
-    navigate('/');       // Rediriger vers la page d'accueil après la déconnexion
+    dispatch(logout()); // Déconnecter l'utilisateur
+    navigate('/signin');       // Rediriger vers la page d'accueil après la déconnexion
   };
 
     return (
@@ -23,10 +24,16 @@ const Header = () => {
             <h1 className="sr-only">Argent Bank</h1>
           </Link>
           <div>
-            {isAuthenticated ? (
-              <div>
+            {isauthentified ? (
+              <div className="main-nav-item-wrapper">
+                <Link to="/user" className="main-nav-item">
+                <i className="fa fa-user-circle"></i>
+                  <span> {user.firstName} </span>
+                
+                </Link>
+
                 <Link to="/user" className="main-nav-item" onClick={handleSignOut}>
-                  <i className="fa fa-user-circle"></i>
+                  <i className="fa fa-sign-out"></i>
                   Sign Out
                 </Link>
                 
