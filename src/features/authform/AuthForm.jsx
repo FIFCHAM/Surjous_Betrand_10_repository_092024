@@ -37,6 +37,13 @@ const AuthForm = () => {
       if (response.ok) {
         console.log(data);
         const token = data.body.token;
+        localStorage.setItem('token', token);
+
+        if (rememberMe) {
+          localStorage.setItem('email', email);
+          localStorage.setItem('password', password);
+          localStorage.setItem('rememberMe', true);
+        }
         
 
         

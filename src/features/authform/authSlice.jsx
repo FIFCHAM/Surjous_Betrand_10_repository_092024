@@ -30,10 +30,11 @@ const authSlice = createSlice({
         lastName,
         token,
       };
+      state.token
 
-      state.email = email;
-      state.password = password;
-      state.rememberMe = rememberMe;
+      state.email 
+      state.password 
+      state.rememberMe 
 
       // Sauvegarde dans le local storage si "Remember me" est coché
       if (rememberMe===true) {
@@ -52,16 +53,23 @@ const authSlice = createSlice({
         username:'',
         firstName:'',
         lastName:'',
-        token: null,
+        
       };
+      state.token = null;
       state.email = '';
       state.password = '';
       state.rememberMe = false;
 
+      localStorage.removeItem('email');
+      localStorage.removeItem('password');
+      localStorage.removeItem('rememberMe');
+      localStorage.removeItem('token');
+
       
     },
     updateUsername(state, action) {
-      state.user.username = action.payload;
+      state.user.username = action.payload.username;
+
     }
   },
 });
