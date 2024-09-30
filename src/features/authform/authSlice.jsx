@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// Récupérer les données du local storage au démarrage si elles existent
 const initialAuthState = {
   user:{
     id:'',
@@ -11,17 +10,16 @@ const initialAuthState = {
 
   },
   isauthentified:false,
-  email: localStorage.getItem('email') || '',
-  password: localStorage.getItem('password') || '',
-  rememberMe: localStorage.getItem('rememberMe') === true || false,
-};
+  email: '',
+  password: '',
 
+}
 const authSlice = createSlice({
   name: 'auth',
   initialState: initialAuthState,
   reducers: {
     login(state, action) {
-      const { id,email, password, rememberMe,token,username,firstName,lastName } = action.payload;
+      const { id,email, password,token,username,firstName,lastName } = action.payload;
       state.isauthentified = true;
       state.user={
         id,
@@ -30,22 +28,15 @@ const authSlice = createSlice({
         lastName,
         token,
       };
-      state.token
-
-      state.email 
-      state.password 
-      state.rememberMe 
-
-      // Sauvegarde dans le local storage si "Remember me" est coché
-      if (rememberMe===true) {
-        localStorage.setItem('email', email);
-        localStorage.setItem('password', password);
-        localStorage.setItem('rememberMe', rememberMe);
-        localStorage.setItem('token', token);
-        
-      }
       
+
+      email ,
+      password ;
     },
+       
+
+      
+     
     logout(state) {
       state.isauthentified=false;
       state.user={
@@ -58,11 +49,10 @@ const authSlice = createSlice({
       state.token = null;
       state.email = '';
       state.password = '';
-      state.rememberMe = false;
+      
 
-      localStorage.removeItem('email');
-      localStorage.removeItem('password');
-      localStorage.removeItem('rememberMe');
+      
+      
       localStorage.removeItem('token');
 
       

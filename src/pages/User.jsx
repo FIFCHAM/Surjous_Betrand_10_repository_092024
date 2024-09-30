@@ -1,38 +1,37 @@
  import Header from "../components/Header"
  import Footer from "../components/Footer"
+ import Account from "../components/Account"
  import EdituserModal from "../features/editusername/EdituserModal"
  import { useState, useEffect } from 'react';
  import { useDispatch, useSelector } from 'react-redux';
  import { updateUsername } from '../features/authform/authSlice';
+
  const User = () => {
 
   const dispatch = useDispatch();
   
-  // Récupérer les informations de l'utilisateur depuis Redux
   const user = useSelector((state) => state.auth.user);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [username, setUsername] = useState( ''); // Username modifiable
-  const [firstName, setFirstName] = useState( ''); // Non modifiable
-  const [lastName, setLastName] = useState( ''); // Non modifiable
+  const [username, setUsername] = useState( ''); 
+  const [firstName, setFirstName] = useState( ''); 
+  const [lastName, setLastName] = useState( ''); 
 
 
-  // Utilisation d'un effet pour synchroniser l'état local avec l'état Redux après mise à jour ou reconnexion
   useEffect(() => {
-    if (isModalOpen){
+    
     setUsername(user.username);
     setFirstName(user.firstName);
     setLastName(user.lastName);
-}
-  }, [user,isModalOpen]); // Exécuter cet effet lorsque `user` change
+  }, [user]); 
 
   const handleSave = async () => {
-    // Appel API pour sauvegarder le nouveau username
+    
     try {
       const response = await fetch('http://localhost:3001/api/v1/user/profile', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user.token}` // Utiliser le token d'authentification
+          'Authorization': `Bearer ${user.token}` 
         },
         body: JSON.stringify({
           userName:username
@@ -41,12 +40,12 @@
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+        console.log(data.body.userName);
         
-        dispatch(updateUsername({ username: data.userName }));
-        setModalOpen(false); // Fermer la modale après sauvegarde
+        dispatch(updateUsername({ username: data.body.userName }));
+        setModalOpen(false); 
       } else {
-        // Gérer l'erreur
+        
         console.error('Failed to update username');
       }
     } catch (error) {
@@ -58,6 +57,10 @@
     <>
       <Header />
       <main className="main bg-dark">
+      <div className="header">
+        <h1>Welcome back<br />{firstName} {lastName}</h1>
+        <button className="edit-button" onClick={() => setModalOpen(true)}>Edit Name</button>
+      </div>
         <EdituserModal isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
         <h2>Edit User Info</h2>
         <form className="edit-form">
@@ -94,41 +97,10 @@
           </div>
         </form>
       </EdituserModal>
-      <div className="header">
-        <h1>Welcome back<br />{firstName} {lastName}</h1>
-        <button className="edit-button" onClick={() => setModalOpen(true)}>Edit Name</button>
-      </div>
       <h2 className="sr-only">Accounts</h2>
-      <section className="account">
-        <div className="account-content-wrapper">
-          <h3 className="account-title">Argent Bank Checking (x8349)</h3>
-          <p className="account-amount">$2,082.79</p>
-          <p className="account-amount-description">Available Balance</p>
-        </div>
-        <div className="account-content-wrapper cta">
-          <button className="transaction-button">View transactions</button>
-        </div>
-      </section>
-      <section className="account">
-        <div className="account-content-wrapper">
-          <h3 className="account-title">Argent Bank Savings (x6712)</h3>
-          <p className="account-amount">$10,928.42</p>
-          <p className="account-amount-description">Available Balance</p>
-        </div>
-        <div className="account-content-wrapper cta">
-          <button className="transaction-button">View transactions</button>
-        </div>
-      </section>
-      <section className="account">
-        <div className="account-content-wrapper">
-          <h3 className="account-title">Argent Bank Credit Card (x8349)</h3>
-          <p className="account-amount">$184.30</p>
-          <p className="account-amount-description">Current Balance</p>
-        </div>
-        <div className="account-content-wrapper cta">
-          <button className="transaction-button">View transactions</button>
-        </div>
-      </section>
+     <Account/>
+     <Account/>
+     <Account/>
     </main>
       <Footer />
     </>

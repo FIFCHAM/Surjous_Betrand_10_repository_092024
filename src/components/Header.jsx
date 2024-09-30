@@ -9,8 +9,8 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleSignOut = () => {
-    dispatch(logout()); // Déconnecter l'utilisateur
-    navigate('/signin');       // Rediriger vers la page d'accueil après la déconnexion
+    dispatch(logout()); 
+    navigate('/signin');      
   };
 
     return (
@@ -28,7 +28,7 @@ const Header = () => {
               <div className="main-nav-item-wrapper">
                 <Link to="/user" className="main-nav-item">
                 <i className="fa fa-user-circle"></i>
-                  <span> {user.firstName} </span>
+                  <span> {user.username} </span>
                 
                 </Link>
 
