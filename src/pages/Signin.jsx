@@ -8,7 +8,7 @@ const Signin = () => {
       <Header />
 
       <main className="main bg-dark">
-       <AuthForm />
+        <AuthForm />
       </main>
 
       <Footer />

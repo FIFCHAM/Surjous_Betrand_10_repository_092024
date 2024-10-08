@@ -1,17 +1,22 @@
-
-const Account = () => {
+import PropTypes from "prop-types";
+const Account = (props) => {
   return (
     <section className="account">
-        <div className="account-content-wrapper">
-          <h3 className="account-title">Argent Bank Checking (x8349)</h3>
-          <p className="account-amount">$2,082.79</p>
-          <p className="account-amount-description">Available Balance</p>
-        </div>
-        <div className="account-content-wrapper cta">
-          <button className="transaction-button">View transactions</button>
-        </div>
-      </section>
+      <div className="account-content-wrapper">
+        <h3 className="account-title">{props.title}</h3>
+        <p className="account-amount">{props.amount}</p>
+        <p className="account-amount-description">{props.description}</p>
+      </div>
+      <div className="account-content-wrapper cta">
+        <button className="transaction-button">View transactions</button>
+      </div>
+    </section>
   );
 };
 
 export default Account;
+Account.propTypes = {
+  title: PropTypes.string.isRequired,
+  amount: PropTypes.number.isRequired,
+  description: PropTypes.string.isRequired,
+};

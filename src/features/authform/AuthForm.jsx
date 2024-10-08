@@ -61,7 +61,7 @@ const AuthForm = () => {
           })
         );
 
-        navigate("/user");
+        navigate("/profile");
       } else {
         setErrorMessage(data.message);
       }
