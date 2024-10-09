@@ -1,25 +1,20 @@
-import '../../utils/css/main.css'
-import PropTypes from 'prop-types';
-
+import PropTypes from "prop-types";
 
 const EdituserModal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
-  
 
   return (
     <div className="modal-overlay">
-    <div className="modal-content">
-      <button className="close-button" onClick={onClose}>
-        &times;
-      </button>
-      {children}
+      <div className="modal-content">
+        <button className="close-button" onClick={onClose}>
+          &times;
+        </button>
+        {children}
+      </div>
     </div>
-  </div>
-    
-  )
-
-}
-export default EdituserModal
+  );
+};
+export default EdituserModal;
 
 EdituserModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,

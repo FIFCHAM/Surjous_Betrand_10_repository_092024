@@ -1,7 +1,7 @@
 import Header from "../components/Header";
-import iconchat from "../assets/images/icon-chat.png";
-import iconmoney from "../assets/images/icon-money.png";
-import iconsecurity from "../assets/images/icon-security.png";
+import iconchat from "../assets/images/icon-chat.webp";
+import iconmoney from "../assets/images/icon-money.webp";
+import iconsecurity from "../assets/images/icon-security.webp";
 import Footer from "../components/Footer";
 import Features from "../components/Features";
 const Home = () => {

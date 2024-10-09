@@ -17,6 +17,6 @@ const Account = (props) => {
 export default Account;
 Account.propTypes = {
   title: PropTypes.string.isRequired,
-  amount: PropTypes.number.isRequired,
+  amount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   description: PropTypes.string.isRequired,
 };

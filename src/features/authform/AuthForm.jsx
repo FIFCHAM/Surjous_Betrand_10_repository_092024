@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 const AuthForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,7 +22,6 @@ const AuthForm = () => {
         body: JSON.stringify({
           email,
           password,
-          
         }),
       });
 
@@ -30,10 +30,11 @@ const AuthForm = () => {
       if (response.ok) {
         console.log(data);
         const token = data.body.token;
-        localStorage.setItem("token", token);
-
-        
-
+        if (rememberMe) {
+          localStorage.setItem("token", token);
+        } else {
+          sessionStorage.setItem("token", token);
+        }
 
         const userResponse = await fetch(
           "http://localhost:3001/api/v1/user/profile",
@@ -48,7 +49,7 @@ const AuthForm = () => {
         const userData = await userResponse.json();
         console.log(userData);
         console.log(userData.body.userName);
-       
+
         dispatch(
           login({
             id: userData.body.id,
@@ -93,6 +94,15 @@ const AuthForm = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+        </div>
+        <div className="input-remember">
+          <input
+            type="checkbox"
+            id="rememberMe"
+            checked={rememberMe}
+            onChange={(e) => setRememberMe(e.target.checked)}
+          />
+          <label htmlFor="rememberMe">Remember me</label>
         </div>
         <button type="submit" className="sign-in-button">
           Sign In

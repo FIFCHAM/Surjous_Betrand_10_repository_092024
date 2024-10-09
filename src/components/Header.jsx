@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import argentbanklogo from "../assets/images/argentBankLogo.png";
+import argentbanklogo from "../assets/images/argentBankLogo.webp";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../features/authform/authSlice";
 const Header = () => {
