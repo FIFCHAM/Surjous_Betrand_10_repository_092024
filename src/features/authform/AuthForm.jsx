@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "./authSlice";
 import { useNavigate } from "react-router-dom";
+
 const AuthForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -10,10 +11,23 @@ const AuthForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("email");
+    const savedPassword = localStorage.getItem("password");
+
+    if (savedEmail && savedPassword) {
+      setEmail(savedEmail);
+      setPassword(savedPassword);
+      setRememberMe(true);
+    }
+  }, []);
+
+  // **************************** ENVOIE DES FORMULAIRES POUR LOGIN ET RECUPERATION DES DONNEES ******************************
   const handleSignIn = async (e) => {
     e.preventDefault();
 
     try {
+      // ************** envoi des données de connexion **************************************
       const response = await fetch("http://localhost:3001/api/v1/user/login", {
         method: "POST",
         headers: {
@@ -28,14 +42,19 @@ const AuthForm = () => {
       const data = await response.json();
 
       if (response.ok) {
-        console.log(data);
+        // ************** récupération du token **************************************
         const token = data.body.token;
+        // ***********Stockage du token et des identifiants de connexion **************************************
         if (rememberMe) {
           localStorage.setItem("token", token);
+          localStorage.setItem("email", email);
+          localStorage.setItem("password", password);
         } else {
           sessionStorage.setItem("token", token);
+          localStorage.removeItem("email");
+          localStorage.removeItem("password");
         }
-
+        // ************** récupération des données utilisateur **************************************
         const userResponse = await fetch(
           "http://localhost:3001/api/v1/user/profile",
           {
@@ -49,7 +68,7 @@ const AuthForm = () => {
         const userData = await userResponse.json();
         console.log(userData);
         console.log(userData.body.userName);
-
+        // **************** stockage des données utilisateur **************************************
         dispatch(
           login({
             id: userData.body.id,
@@ -61,7 +80,7 @@ const AuthForm = () => {
             lastName: userData.body.lastName,
           })
         );
-
+        // ************** navigation vers la page de profil **************************************
         navigate("/profile");
       } else {
         setErrorMessage(data.message);
